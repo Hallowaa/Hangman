@@ -1,13 +1,13 @@
 package Core;
 
 import Art.Frames;
-import IO.Output;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.Scanner;
 
 public final class GameData {
     private GameData() {}
@@ -16,6 +16,8 @@ public final class GameData {
     private static boolean wordsLoaded = false;
     private static String currentWord = "";
     private static final int maxTries = Frames.values().length;
+    public static final Scanner scanner = new Scanner(System.in);
+    private static int points = 0;
 
     public static void loadWords(File file) throws IOException {
         WordParser parser = new WordParser();
@@ -38,5 +40,17 @@ public final class GameData {
 
     public static int getMaxTries() {
         return maxTries;
+    }
+
+    public static void increasePoints(int amount) {
+        points += amount;
+    }
+
+    public static void setPoints(int points) {
+        GameData.points = points;
+    }
+
+    public static int getPoints() {
+        return points;
     }
 }

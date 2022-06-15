@@ -1,7 +1,7 @@
 package Core.State;
 
 import Core.GameData;
-import IO.Output;
+import Core.IO.Output;
 
 import java.io.File;
 import java.io.IOException;
@@ -15,7 +15,6 @@ public class LoadGameState implements State {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        GameData.getNextWord();
         Output.wordsLoaded();
         Output.greetPlayer();
         next();

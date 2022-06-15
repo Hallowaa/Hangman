@@ -1,9 +1,8 @@
 import Core.State.LoadGameState;
-import java.io.IOException;
 
 public class Game {
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         new LoadGameState().execute();
     }
 
