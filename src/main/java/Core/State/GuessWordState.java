@@ -55,7 +55,7 @@ public class GuessWordState implements State {
 
                 lastGuessed = guess.charAt(0);
             }
-            Output.fakeClearConsole();
+            Output.clearConsole();
         }
 
         next();
