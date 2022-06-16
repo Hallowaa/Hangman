@@ -47,7 +47,7 @@ public final class Output {
 
         for (int i = 0; i < word.length(); i++) {
             if (guessed[i]) {
-                result.append(word.charAt(i));
+                result.append(word.charAt(i)).append(" ");
             } else {
                 result.append("_ ");
             }
