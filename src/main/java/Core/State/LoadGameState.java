@@ -3,15 +3,16 @@ package Core.State;
 import Core.GameData;
 import Core.IO.Output;
 
-import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 
 public class LoadGameState implements State {
     @Override
     public void execute() {
         Output.loadingWords();
         try {
-            GameData.loadWords(new File("src/main/resources/wordlist.json"));
+            InputStream in = LoadGameState.class.getResourceAsStream("/Words.json");
+            GameData.loadWords(in);
         } catch (IOException e) {
             e.printStackTrace();
         }

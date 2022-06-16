@@ -24,7 +24,6 @@ public class GuessWordState implements State {
 
         while(currentFails < GameData.getMaxTries() && !wordIsGuessed(guessedPositions)) {
             Output.printArt(currentFails);
-            Output.printGuessedChars(guessedCharacters);
 
             if (lastGuessedAlreadyGuessed) {
                 Output.printCharAlreadyGuessed(lastGuessed);
@@ -32,6 +31,9 @@ public class GuessWordState implements State {
             }
 
             Output.formatWord(wordToGuess, guessedPositions);
+
+            if (!guessedCharacters.isEmpty())
+                Output.printGuessedChars(guessedCharacters);
 
             Output.requestCharOrWord();
             String guess = Input.requestInput(GameData.scanner);

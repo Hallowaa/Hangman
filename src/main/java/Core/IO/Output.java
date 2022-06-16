@@ -49,7 +49,7 @@ public final class Output {
             if (guessed[i]) {
                 result.append(word.charAt(i));
             } else {
-                result.append("_");
+                result.append("_ ");
             }
         }
 
@@ -62,6 +62,7 @@ public final class Output {
 
     public static void printArt(int frame) {
         System.out.printf(Frames.values()[frame].getFrame());
+        System.out.printf("%n%n");
     }
 
     public static void printGuessedChars(List<Character> characters) {

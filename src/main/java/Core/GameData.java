@@ -2,8 +2,10 @@ package Core;
 
 import Art.Frames;
 
-import java.io.File;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -19,9 +21,9 @@ public final class GameData {
     public static final Scanner scanner = new Scanner(System.in);
     private static int points = 0;
 
-    public static void loadWords(File file) throws IOException {
-        WordParser parser = new WordParser();
-        words = parser.parseWords(file);
+    public static void loadWords(InputStream in) throws IOException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        words = objectMapper.readValue(in, new TypeReference<List<String>>() {});
         wordsLoaded = true;
     }
 
