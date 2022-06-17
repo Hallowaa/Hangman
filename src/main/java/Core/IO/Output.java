@@ -1,6 +1,7 @@
 package Core.IO;
 
 import Art.Frames;
+import org.apache.commons.lang3.SystemUtils;
 
 import java.io.IOException;
 import java.util.List;
@@ -22,21 +23,14 @@ public final class Output {
         System.out.println("Words loaded!");
     }
 
-    public static void fakeClearConsole(int enters) {
-        for (int i = 0; i < enters; i++) {
-            System.out.println();
-        }
-    }
-
-    public static void fakeClearConsole() {
-        for (int i = 0; i < 15; i++) {
-            System.out.println();
-        }
-    }
-
     public static void clearConsole() {
         try {
-            new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+            if (SystemUtils.IS_OS_WINDOWS) {
+                new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+            } else if (SystemUtils.IS_OS_LINUX) {
+                System.out.print("\033[H\033[2J");
+                System.out.flush();
+            }
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }
@@ -92,6 +86,10 @@ public final class Output {
 
     public static void printLost() {
         System.out.print("You lost, wanna play again? (y/n): ");
+    }
+
+    public static void lostRevealWord(String word) {
+        System.out.printf("The word was %s%n", word);
     }
 
 }

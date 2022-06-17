@@ -8,6 +8,7 @@ public class DeadState implements State {
     @Override
     public void execute() {
         GameData.setPoints(0);
+        Output.lostRevealWord(GameData.getCurrentWord());
         Output.printLost();
         String input = Input.requestInput(GameData.scanner);
 
