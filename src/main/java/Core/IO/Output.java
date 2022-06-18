@@ -7,8 +7,15 @@ import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * A collection of Output methods to format collections or simply output a specific message.
+ */
 public final class Output {
     private Output() {}
+
+    public static void print(String text) {
+        System.out.printf("%s%n", text);
+    }
 
     public static void greetPlayer() {
         System.out.println("Hello, lovely player!");
@@ -23,6 +30,9 @@ public final class Output {
         System.out.println("Words loaded!");
     }
 
+    /**
+     * Clears the console for Windows and Linux.
+     */
     public static void clearConsole() {
         try {
             if (SystemUtils.IS_OS_WINDOWS) {
@@ -32,28 +42,18 @@ public final class Output {
                 System.out.flush();
             }
         } catch (IOException | InterruptedException e) {
-            e.printStackTrace();
+            Output.print("Error when clearing the console. Perhaps your OS has not been accounted for yet!");
         }
-    }
-
-    public static void formatWord(String word, boolean[] guessed) {
-        StringBuilder result = new StringBuilder();
-
-        for (int i = 0; i < word.length(); i++) {
-            if (guessed[i]) {
-                result.append(word.charAt(i)).append(" ");
-            } else {
-                result.append("_ ");
-            }
-        }
-
-        System.out.println(result);
     }
 
     public static void printCharAlreadyGuessed(Character character) {
         System.out.printf("%s was already guessed!%n", character);
     }
 
+    /**
+     * Prints a specific frame from {@link Frames}.
+     * @param frame The frame's index
+     */
     public static void printArt(int frame) {
         System.out.printf(Frames.values()[frame].getFrame());
         System.out.printf("%n%n");
@@ -61,7 +61,9 @@ public final class Output {
 
     public static void printGuessedChars(List<Character> characters) {
         StringBuilder result = new StringBuilder();
+        if (!characters.isEmpty())
         result.append("Guessed characters: ");
+
         List<String> charListToStringList =
                 characters
                 .stream()
@@ -69,6 +71,8 @@ public final class Output {
                 .collect(Collectors.toList());
 
         result.append(String.join(", ", charListToStringList));
+
+        if (!result.isEmpty())
         System.out.println(result);
     }
 

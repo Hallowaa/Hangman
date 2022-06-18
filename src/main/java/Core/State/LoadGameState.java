@@ -6,6 +6,9 @@ import Core.IO.Output;
 import java.io.IOException;
 import java.io.InputStream;
 
+/**
+ * State for loading the game's assets, such as words.
+ */
 public class LoadGameState implements State {
     @Override
     public void execute() {
@@ -14,7 +17,7 @@ public class LoadGameState implements State {
             InputStream in = LoadGameState.class.getResourceAsStream("/Words.json");
             GameData.loadWords(in);
         } catch (IOException e) {
-            e.printStackTrace();
+            Output.print("Error while loading words. Perhaps 'Words.json' is missing or has been renamed.");
         }
         Output.wordsLoaded();
         Output.greetPlayer();

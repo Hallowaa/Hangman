@@ -1,28 +1,28 @@
 package Core.State;
 
+import Core.Assets.Word;
 import Core.GameData;
 import Core.IO.Input;
 import Core.IO.Output;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
+/**
+ * State for when the player is currently guessing a word.
+ */
 public class GuessWordState implements State {
 
     private int currentFails = 0;
+    private final List<Character> guessedCharacters = new ArrayList<>();
+    private char lastGuessed = 0;
+    private boolean lastGuessedAlreadyGuessed = false;
 
     @Override
     public void execute() {
-        GameData.getNextWord();
-        String wordToGuess = GameData.getCurrentWord();
-        boolean[] guessedPositions = new boolean[wordToGuess.length()];
-        List<Character> guessedCharacters = new ArrayList<>();
-        Arrays.fill(guessedPositions, false);
-        char lastGuessed = ' ';
-        boolean lastGuessedAlreadyGuessed = false;
-
-        while(currentFails < GameData.getMaxTries() && !wordIsGuessed(guessedPositions)) {
+        GameData.randomizeCurrentWord();
+        Word currentWord = GameData.getCurrentWord();
+        while(currentFails < GameData.getMaxTries() && !currentWord.isGuessed()) {
             Output.printArt(currentFails);
 
             if (lastGuessedAlreadyGuessed) {
@@ -30,60 +30,42 @@ public class GuessWordState implements State {
                 lastGuessedAlreadyGuessed = false;
             }
 
-            Output.formatWord(wordToGuess, guessedPositions);
-
-            if (!guessedCharacters.isEmpty())
-                Output.printGuessedChars(guessedCharacters);
-
+            Output.print(currentWord.format());
+            Output.printGuessedChars(guessedCharacters);
             Output.requestCharOrWord();
-            String guess = Input.requestInput(GameData.scanner);
 
-            if (guess.length() > 1 && !guess.equals(wordToGuess)) {
+            String guess = Input.requestInput();
+
+            if (guess.length() > 1 && !guess.equals(currentWord.getText())) {
                 currentFails++;
-            } else if (guess.equals(wordToGuess)) {
-                next();
+
+            } else if (guess.equals(currentWord.getText())) {
+                // Guessed the whole word
+                break;
+
             } else if (guess.length() == 1) {
-                if (guessedCharacters.contains(guess.charAt(0))) {
+                char character = guess.charAt(0);
+
+                if (guessedCharacters.contains(character)) {
                     lastGuessedAlreadyGuessed = true;
-                } else if (wordToGuess.contains(guess)) {
-                    for (Integer position : findCharPositionInWord(wordToGuess, guess.charAt(0))) {
-                        guessedPositions[position] = true;
-                    }
-                    guessedCharacters.add(guess.charAt(0));
+
+                } else if (currentWord.contains(guess)) {
+                    currentWord.addGuessedPositions(currentWord.getPositionsOfChar(character));
+                    guessedCharacters.add(character);
+
                 } else {
                     currentFails++;
-                    guessedCharacters.add(guess.charAt(0));
+                    guessedCharacters.add(character);
                 }
 
-                lastGuessed = guess.charAt(0);
+                lastGuessed = character;
             }
             Output.clearConsole();
         }
-
         Output.clearConsole();
         next();
     }
-    
-    private List<Integer> findCharPositionInWord(String word, char character) {
-        List<Integer> result = new ArrayList<>();
-        for (int i = 0; i < word.toCharArray().length; i++) {
-            if (character == word.charAt(i)) {
-                result.add(i);
-            }
-        }
-        return result;
-    }
 
-    private boolean wordIsGuessed(boolean[] positions) {
-        boolean result = true;
-        for (boolean position : positions) {
-            if (!position) {
-                result = false;
-                break;
-            }
-        }
-        return result;
-    }
 
     @Override
     public void next() {
