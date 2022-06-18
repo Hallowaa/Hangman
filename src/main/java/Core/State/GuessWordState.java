@@ -62,7 +62,6 @@ public class GuessWordState implements State {
             }
             Output.clearConsole();
         }
-        Output.clearConsole();
         next();
     }
 

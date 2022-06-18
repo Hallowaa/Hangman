@@ -12,6 +12,7 @@ import java.io.InputStream;
 public class LoadGameState implements State {
     @Override
     public void execute() {
+        Output.clearConsole();
         Output.loadingWords();
         try {
             InputStream in = LoadGameState.class.getResourceAsStream("/Words.json");

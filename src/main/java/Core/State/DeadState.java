@@ -10,6 +10,7 @@ import Core.IO.Output;
 public class DeadState implements State {
     @Override
     public void execute() {
+        Output.clearConsole();
         GameData.setPoints(0);
         Output.lostRevealWord(GameData.getCurrentWord().getText());
         Output.printLost();
